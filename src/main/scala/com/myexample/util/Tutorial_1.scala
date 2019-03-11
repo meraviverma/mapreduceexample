@@ -1,6 +1,6 @@
 package com.myexample.util
 
-import org.apache.spark.sql.{SQLContext, SparkSession}
+import org.apache.spark.sql.{Dataset, SQLContext, SparkSession}
 import com.datastax.spark.connector._
 
 object Tutorial_1 {
@@ -30,13 +30,18 @@ object Tutorial_1 {
     SaveMode.Ignore will not perform any action on existing table
     SaveMode.ErrorIfExists (default) will throw the following exception*/
 
+
     //Append Mode
-   val newNames = sc.sparkContext.parallelize(Seq(Person("Eleni", "Garcia", 1), Person("Galina", "Xinn", 5), Person("Carlo", "Tran", 1))).toDS
+   val newNames: Dataset[Person] = sc.sparkContext.parallelize(Seq(Person("Eleni", "Garcia", 1), Person("Galina", "Xinn", 5), Person("Carlo", "Tran", 1)))
+     .toDS
+
     newNames.write.format("org.apache.spark.sql.cassandra").options(Map("table" -> "people", "keyspace" -> "hr")).
       mode(org.apache.spark.sql.SaveMode.Append).save
 
     //Overwrite Mode
-    val newNamesover = sc.sparkContext.parallelize(Seq(Person("Eleni", "Garcia", 1), Person("Galina", "Xin", 2), Person("Carlo", "Tran", 1))).toDS
+    val newNamesover = sc.sparkContext.parallelize(Seq(Person("Eleni", "Garcia", 1), Person("Galina", "Xin", 2), Person("Carlo", "Tran", 1)))
+      .toDS
+
     newNamesover.write.format("org.apache.spark.sql.cassandra").options(Map("table" -> "people", "keyspace" -> "hr", "confirm.truncate" -> "true")).
       mode(org.apache.spark.sql.SaveMode.Overwrite).save
 
