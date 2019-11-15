@@ -1,0 +1,5 @@
+train affected,delay,delaycodedesc,cost
+3-14,LATE,freight,24
+3-15,LATE,Signal issue,33
+3-15,LATE,Signal issue,22
+4-15,LATE,Signal issue,10
